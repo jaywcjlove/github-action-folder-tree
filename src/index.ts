@@ -1,5 +1,5 @@
 import { context } from '@actions/github';
-import { getInput, setOutput, startGroup, info, endGroup } from '@actions/core';
+import { getInput, setOutput, setFailed, startGroup, info, endGroup } from '@actions/core';
 import { parse, ParseOptions } from 'dree';
 
 function convertToNumber(str: string): number {
@@ -15,14 +15,16 @@ function convertToNumber(str: string): number {
 
   const dtreeOptions: ParseOptions = { depth };
 
-  if (exclude) {
-    dtreeOptions.exclude = new RegExp(exclude);
+  try {
+    if (exclude) {
+      dtreeOptions.exclude = new RegExp(exclude);
+    }
+    const dreeResult = parse(folderPath, dtreeOptions);
+    startGroup(`\x1b[32;1m ${owner}/${repo} \x1b[0m tree: `);
+    info(`${dreeResult}`);
+    endGroup();
+    setOutput('content', dreeResult);
+  } catch (error) {
+    setFailed(error as Error);
   }
-  
-  const dreeResult = parse(folderPath, dtreeOptions);
-
-  startGroup(`\x1b[32;1m ${owner}/${repo} \x1b[0m tree: `);
-  info(`${dreeResult}`);
-  endGroup();
-  setOutput('content', dreeResult);
 })();
