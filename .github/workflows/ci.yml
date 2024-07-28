@@ -23,6 +23,12 @@ jobs:
         with:
           path: ./src
 
+      - name: Output src/ folder tree
+        # uses: jaywcjlove/github-action-folder-tree@main
+        uses: ./
+        with:
+          exclude: "node_modules|dist"
+
       - name: Create idoc config
         run: |
           cat > idoc.yml << EOF

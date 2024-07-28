@@ -10,6 +10,10 @@ inputs:
     description: 'Folder path'
     default: ''
     required: false
+  exclude:
+    description: 'Pass a regex string to exclude directories from printing'
+    default: ''
+    required: false
   depth:
     description: 'Scan the maximum depth reachable for the given path'
     default: 5

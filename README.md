@@ -1,4 +1,4 @@
-Print folder tree
+Print Folder Tree
 ===
 
 [![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-048754?logo=buymeacoffee)](https://jaywcjlove.github.io/#/sponsor)
@@ -20,6 +20,7 @@ View the folder directory tree structure, similar to the output of the `tree` co
 
 - `path` Folder path. (default `./`)
 - `depth` Scan the maximum depth reachable for the given path (default `5`)
+- `exclude` Pass a regex string to exclude directories from printing
 
 ## Outputs
 
