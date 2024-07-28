@@ -1,0 +1,28 @@
+name: 'Print folder tree'
+author: 'Kenny Wong'
+description: 'View the folder directory tree structure, similar to the output of the `tree` command'
+inputs:
+  token:
+    description: 'Your GITHUB_TOKEN'
+    default: ${{ github.token }}
+    required: false
+  path:
+    description: 'Folder path'
+    default: ''
+    required: false
+  depth:
+    description: 'Scan the maximum depth reachable for the given path'
+    default: 5
+    required: false
+
+outputs:
+  content:
+    description: 'Directory tree structure text'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
+
+branding:
+  icon: 'file'
+  color: 'purple'
