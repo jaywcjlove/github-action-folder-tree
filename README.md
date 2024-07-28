@@ -17,6 +17,22 @@ View the folder directory tree structure, similar to the output of the `tree` co
     depth: 2
 ```
 
+Output Project Structure
+
+```sh
+├── .lintstagedrc
+├── LICENSE
+├── README.md
+├── action.yml
+├─> build
+├── package-lock.json
+├── package.json
+├── renovate.json
+├─> src
+│   └── index.ts
+└── tsconfig.json
+```
+
 ## Inputs
 
 - `path` Folder path. (default `./`)

@@ -23,11 +23,11 @@ jobs:
         with:
           path: ./src
 
-      - name: Output src/ folder tree
+      - name: Output ./ folder tree
         # uses: jaywcjlove/github-action-folder-tree@main
         uses: ./
         with:
-          exclude: "node_modules|dist|.git"
+          exclude: "node_modules|dist|.git|.husky"
 
       - name: Create idoc config
         run: |
