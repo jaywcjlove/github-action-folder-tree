@@ -12,6 +12,7 @@ View the folder directory tree structure, similar to the output of the `tree` co
 - name: Print Folder Tree
   uses: jaywcjlove/github-action-folder-tree@main
   with:
+    exclude: "node_modules|dist|.git|.husky"
     path: ./src
     depth: 2
 ```
