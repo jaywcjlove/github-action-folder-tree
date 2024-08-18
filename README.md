@@ -33,6 +33,22 @@ Output Project Structure
 └── tsconfig.json
 ```
 
+```yml
+- name: Print Folder Tree
+  uses: jaywcjlove/github-action-folder-tree@main
+  id: tree
+  with:
+    exclude: "node_modules|dist|.git|.husky"
+    path: ./src
+    depth: 2
+
+- name: Modify README.md
+  uses: jaywcjlove/github-action-modify-file-content@main
+  with:
+    path: README.md
+    body: ${{ steps.tree.outputs.content }}
+```
+
 ## Inputs
 
 - `path` Folder path. (default `./`)
