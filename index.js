@@ -2834,6 +2834,12 @@ var lowercaseKeys = function lowercaseKeys(obj) {
 "use strict";
 
 
+var _classCallCheck = (__webpack_require__(7383)["default"]);
+var _createClass = (__webpack_require__(4579)["default"]);
+var _callSuper = (__webpack_require__(8336)["default"]);
+var _inherits = (__webpack_require__(9511)["default"]);
+var _superPropGet = (__webpack_require__(9901)["default"]);
+var _wrapNativeSuper = (__webpack_require__(1837)["default"]);
 var _createForOfIteratorHelper = (__webpack_require__(883)["default"]);
 Object.defineProperty(exports, "__esModule", ({
   value: true
@@ -2853,9 +2859,9 @@ function getProxyUrl(reqUrl) {
   }();
   if (proxyVar) {
     try {
-      return new URL(proxyVar);
+      return new DecodedURL(proxyVar);
     } catch (_a) {
-      if (!proxyVar.startsWith('http://') && !proxyVar.startsWith('https://')) return new URL("http://".concat(proxyVar));
+      if (!proxyVar.startsWith('http://') && !proxyVar.startsWith('https://')) return new DecodedURL("http://".concat(proxyVar));
     }
   } else {
     return undefined;
@@ -2923,7 +2929,28 @@ function isLoopbackAddress(host) {
   var hostLower = host.toLowerCase();
   return hostLower === 'localhost' || hostLower.startsWith('127.') || hostLower.startsWith('[::1]') || hostLower.startsWith('[0:0:0:0:0:0:0:1]');
 }
-//# sourceMappingURL=proxy.js.map
+var DecodedURL = /*#__PURE__*/function (_URL) {
+  function DecodedURL(url, base) {
+    var _this;
+    _classCallCheck(this, DecodedURL);
+    _this = _callSuper(this, DecodedURL, [url, base]);
+    _this._decodedUsername = decodeURIComponent(_superPropGet((_this, DecodedURL), "username", _this, 1));
+    _this._decodedPassword = decodeURIComponent(_superPropGet((_this, DecodedURL), "password", _this, 1));
+    return _this;
+  }
+  _inherits(DecodedURL, _URL);
+  return _createClass(DecodedURL, [{
+    key: "username",
+    get: function get() {
+      return this._decodedUsername;
+    }
+  }, {
+    key: "password",
+    get: function get() {
+      return this._decodedPassword;
+    }
+  }]);
+}( /*#__PURE__*/_wrapNativeSuper(URL)); //# sourceMappingURL=proxy.js.map
 
 /***/ }),
 
@@ -36920,13 +36947,13 @@ minimatch.unescape = unescape_unescape;
 var re = function (n) {
     return n.DIRECTORY = "directory", n.FILE = "file", n;
   }(re || {}),
-  ne = function (a) {
-    return a.ALPHABETICAL = "alpha", a.ALPHABETICAL_REVERSE = "antialpha", a.ALPHABETICAL_INSENSITIVE = "alpha-insensitive", a.ALPHABETICAL_INSENSITIVE_REVERSE = "antialpha-insensitive", a;
+  ne = function (l) {
+    return l.ALPHABETICAL = "alpha", l.ALPHABETICAL_REVERSE = "antialpha", l.ALPHABETICAL_INSENSITIVE = "alpha-insensitive", l.ALPHABETICAL_INSENSITIVE_REVERSE = "antialpha-insensitive", l;
   }(ne || {}),
-  se = function (l) {
-    return l.ALPHABETICAL = "alpha", l.ALPHABETICAL_REVERSE = "antialpha", l.ALPHABETICAL_INSENSITIVE = "alpha-insensitive", l.ALPHABETICAL_INSENSITIVE_REVERSE = "antialpha-insensitive", l.FOLDERS_FIRST = "folders-first", l.FILES_FIRST = "files-first", l;
+  se = function (a) {
+    return a.ALPHABETICAL = "alpha", a.ALPHABETICAL_REVERSE = "antialpha", a.ALPHABETICAL_INSENSITIVE = "alpha-insensitive", a.ALPHABETICAL_INSENSITIVE_REVERSE = "antialpha-insensitive", a.FOLDERS_FIRST = "folders-first", a.FILES_FIRST = "files-first", a;
   }(se || {}),
-  C = {
+  p = {
     stat: !1,
     normalize: !1,
     symbolicLinks: !0,
@@ -36950,6 +36977,24 @@ var re = function (n) {
     homeShortcut: !1,
     skipErrors: !0
   },
+  ie = {
+    dirChild: "\u2500> ",
+    fileChild: "\u2500\u2500 ",
+    forkChild: "\u251C",
+    lastChild: "\u2514",
+    linkChild: ">>",
+    tabIndent: "    ",
+    pipeIndent: "\u2502   "
+  },
+  be = {
+    dirChild: "-\\ ",
+    fileChild: "-- ",
+    forkChild: "|",
+    lastChild: "`",
+    linkChild: "->",
+    tabIndent: "    ",
+    pipeIndent: "|   "
+  },
   B = {
     symbolicLinks: !0,
     followLinks: !1,
@@ -36960,12 +37005,13 @@ var re = function (n) {
     sorted: !1,
     postSorted: !1,
     homeShortcut: !1,
+    symbols: ie,
     skipErrors: !0
   };
-function D(r, t) {
+function w(r, t) {
   return (0,external_node_path_namespaceObject.resolve)(t.homeShortcut ? r.replace(/^~($|\/|\\)/, (0,external_node_os_namespaceObject.homedir)() + "$1") : r);
 }
-function x(r) {
+function S(r) {
   return (Array.isArray(r) ? r : [r]).map(function (t) {
     return t instanceof RegExp ? t : makeRe(t, {
       dot: !0
@@ -36974,15 +37020,15 @@ function x(r) {
     return t instanceof RegExp;
   });
 }
-function M(r) {
+function V(r) {
   var t = {};
   if (r) {
-    for (var n in C) t[n] = r[n] !== void 0 ? r[n] : C[n];
+    for (var n in p) t[n] = r[n] !== void 0 ? r[n] : p[n];
     t.depth < 0 && (t.depth = 0);
-  } else t = C;
+  } else t = p;
   return t;
 }
-function p(r) {
+function D(r) {
   var t = {};
   if (r) {
     for (var n in B) t[n] = r[n] !== void 0 ? r[n] : B[n];
@@ -36990,41 +37036,41 @@ function p(r) {
   } else t = B;
   return t;
 }
-function P(r) {
+function C(r) {
   var t = ["B", "KB", "MB", "GB", "TB"],
     n;
   for (n = 0; n < t.length && r > 1e3; n++) r /= 1e3;
   return Math.round(r * 100) / 100 + " " + t[n];
 }
-function L(r, t) {
+function x(r, t) {
   return r.localeCompare(t);
 }
-function k(r, t) {
+function A(r, t) {
   return r.toLowerCase().localeCompare(t.toLowerCase());
 }
-function A(r, t) {
+function k(r, t) {
   if (!t) return r;
-  if (t === !0) return r.sort(L);
+  if (t === !0) return r.sort(x);
   if (typeof t == "string") switch (t) {
     case "alpha":
-      return r.sort(L);
+      return r.sort(x);
     case "antialpha":
-      return r.sort(L).reverse();
+      return r.sort(x).reverse();
     case "alpha-insensitive":
-      return r.sort(k);
+      return r.sort(A);
     case "antialpha-insensitive":
-      return r.sort(k).reverse();
+      return r.sort(A).reverse();
     default:
       return r;
   } else if (typeof t == "function") return r.sort(t);
 }
 function z(r, t) {
-  return L(r.name, t.name);
+  return x(r.name, t.name);
 }
 function Y(r, t) {
-  return k(r.name, t.name);
+  return A(r.name, t.name);
 }
-function ie(r, t) {
+function le(r, t) {
   return r.type === "directory" && t.type === "file" ? -1 : r.type === "file" && t.type === "directory" ? 1 : 0;
 }
 function ae(r, t) {
@@ -37043,34 +37089,34 @@ function $(r, t) {
     case "antialpha-insensitive":
       return r.sort(Y).reverse();
     case "folders-first":
-      return r.sort(ie);
+      return r.sort(le);
     case "files-first":
       return r.sort(ae);
     default:
       return r;
   } else if (typeof t == "function") return r.sort(t);
 }
-function q(r, t) {
+function U(r, t) {
   if (!t) return r;
   if (t === !0) return r.sort(function (n, e) {
-    return L(n.relativePath, e.relativePath);
+    return x(n.relativePath, e.relativePath);
   });
   if (typeof t == "string") switch (t) {
     case "alpha":
       return r.sort(function (n, e) {
-        return L(n.relativePath, e.relativePath);
+        return x(n.relativePath, e.relativePath);
       });
     case "antialpha":
       return r.sort(function (n, e) {
-        return L(n.relativePath, e.relativePath);
+        return x(n.relativePath, e.relativePath);
       }).reverse();
     case "alpha-insensitive":
       return r.sort(function (n, e) {
-        return k(n.relativePath, e.relativePath);
+        return A(n.relativePath, e.relativePath);
       });
     case "antialpha-insensitive":
       return r.sort(function (n, e) {
-        return k(n.relativePath, e.relativePath);
+        return A(n.relativePath, e.relativePath);
       }).reverse();
     default:
       return r;
@@ -37078,16 +37124,16 @@ function q(r, t) {
     return t(n.relativePath, e.relativePath);
   });
 }
-function U(r, t, n, e, a, d) {
+function q(r, t, n, e, l, o) {
   if (e.depth !== void 0 && n > e.depth) return null;
-  var l = r === t ? "." : w(r, t);
-  if (e.exclude && r !== t && x(e.exclude).some(function (g) {
-    return g.test("/".concat(l));
+  var a = r === t ? "." : R(r, t);
+  if (e.exclude && r !== t && S(e.exclude).some(function (b) {
+    return b.test("/".concat(a));
   })) return null;
-  var s = b(t),
+  var s = T(t),
     h;
   try {
-    h = N(t);
+    h = O(t);
   } catch (c) {
     if (e.skipErrors) return null;
     throw c;
@@ -37099,96 +37145,96 @@ function U(r, t, n, e, a, d) {
     if (e.skipErrors) return null;
     throw c;
   }
-  var E = i.isSymbolicLink(),
-    I = h.isFile() ? "file" : "directory";
-  if (!e.showHidden && s.charAt(0) === "." || !e.symbolicLinks && E) return null;
-  var m;
+  var m = i.isSymbolicLink(),
+    g = h.isFile() ? "file" : "directory";
+  if (!e.showHidden && s.charAt(0) === "." || !e.symbolicLinks && m) return null;
+  var E;
   if (e.hash) {
     var c = e.hashAlgorithm;
-    m = V(c), m.update(s);
+    E = M(c), E.update(s);
   }
-  var o = {
+  var u = {
     name: s,
     path: e.normalize ? t.replace(/\\/g, "/") : t,
-    relativePath: e.normalize ? l.replace(/\\/g, "/") : l,
-    type: I,
-    isSymbolicLink: E,
+    relativePath: e.normalize ? a.replace(/\\/g, "/") : a,
+    type: g,
+    isSymbolicLink: m,
     stat: e.followLinks ? h : i
   };
-  switch (e.stat || delete o.stat, I) {
+  switch (e.stat || delete u.stat, g) {
     case "directory":
       var _c = [],
-        g;
-      if (e.followLinks || !E) {
+        b;
+      if (e.followLinks || !m) {
         try {
-          g = O(t), g = A(g, e.sorted);
-        } catch (u) {
+          b = N(t), b = k(b, e.sorted);
+        } catch (d) {
           if (e.skipErrors) return null;
-          throw u;
+          throw d;
         }
-        if (e.emptyDirectory && (o.isEmpty = !g.length), g.forEach(function (u) {
-          var f = U(r, T(t, u), n + 1, e, a, d);
+        if (e.emptyDirectory && (u.isEmpty = !b.length), b.forEach(function (d) {
+          var f = q(r, L(t, d), n + 1, e, l, o);
           f !== null && _c.push(f);
         }), e.excludeEmptyDirectories && !_c.length) return null;
       }
       if (e.matches && r !== t) {
-        var u = x(e.matches);
-        if (!_c.length && u.some(function (f) {
-          return !f.test("/".concat(l));
+        var d = S(e.matches);
+        if (!_c.length && d.some(function (f) {
+          return !f.test("/".concat(a));
         })) return null;
       }
       if (e.sizeInBytes || e.size) {
-        var _u = _c.reduce(function (f, y) {
+        var _d = _c.reduce(function (f, y) {
           return f + y.sizeInBytes;
         }, 0);
-        o.sizeInBytes = _u, o.size = e.size ? P(_u) : void 0, e.sizeInBytes || _c.forEach(function (f) {
+        u.sizeInBytes = _d, u.size = e.size ? C(_d) : void 0, e.sizeInBytes || _c.forEach(function (f) {
           return f.sizeInBytes = void 0;
         });
       }
       if (e.hash) {
         _c.forEach(function (f) {
-          m.update(f.hash);
+          E.update(f.hash);
         });
-        var _u2 = e.hashEncoding;
-        o.hash = m.digest(_u2);
+        var _d2 = e.hashEncoding;
+        u.hash = E.digest(_d2);
       }
-      e.descendants && (o.descendants = _c.reduce(function (u, f) {
+      e.descendants && (u.descendants = _c.reduce(function (d, f) {
         var _f$descendants;
-        return u + (f.type === "directory" && e.descendantsIgnoreDirectories ? 0 : 1) + ((_f$descendants = f.descendants) !== null && _f$descendants !== void 0 ? _f$descendants : 0);
-      }, 0)), _c.length && (o.children = e.postSorted ? $(_c, e.postSorted) : _c);
+        return d + (f.type === "directory" && e.descendantsIgnoreDirectories ? 0 : 1) + ((_f$descendants = f.descendants) !== null && _f$descendants !== void 0 ? _f$descendants : 0);
+      }, 0)), _c.length && (u.children = e.postSorted ? $(_c, e.postSorted) : _c);
       break;
     case "file":
-      if (o.extension = R(t).replace(".", ""), e.extensions && e.extensions.indexOf(o.extension) === -1 || e.matches && r !== t && x(e.matches).some(function (f) {
-        return !f.test("/".concat(l));
+      if (u.extension = P(t).replace(".", ""), e.extensions && e.extensions.indexOf(u.extension) === -1 || e.matches && r !== t && S(e.matches).some(function (f) {
+        return !f.test("/".concat(a));
       })) return null;
       if (e.sizeInBytes || e.size) {
-        var _u3 = e.followLinks ? h.size : i.size;
-        o.sizeInBytes = _u3, o.size = e.size ? P(_u3) : void 0;
+        var _d3 = e.followLinks ? h.size : i.size;
+        u.sizeInBytes = _d3, u.size = e.size ? C(_d3) : void 0;
       }
       if (e.hash) {
-        var _u4;
+        var _d4;
         try {
-          _u4 = Z(t);
+          _d4 = Z(t);
         } catch (y) {
           if (e.skipErrors) return null;
           throw y;
         }
-        m.update(_u4);
+        E.update(_d4);
         var f = e.hashEncoding;
-        o.hash = m.digest(f);
+        u.hash = E.digest(f);
       }
       break;
     default:
       return null;
   }
-  return a && I === "file" ? a(o, e.followLinks ? h : i) : d && I === "directory" && d(o, e.followLinks ? h : i), o;
+  return l && g === "file" ? l(u, e.followLinks ? h : i) : o && g === "directory" && o(u, e.followLinks ? h : i), u;
 }
 function G(_x, _x2, _x3, _x4, _x5, _x6) {
   return _G.apply(this, arguments);
 }
 function _G() {
-  _G = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(r, t, n, e, a, d) {
-    var l, s, h, i, E, I, m, c, o, _c2, g, u, _u5, _u6, _u7, _u8, f;
+  _G = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(r, t, n, e, l, o) {
+    var a, s, h, i, m, g, E, c, u, _c2, b, d, _d5, _d6, _d7, _d8, f;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
@@ -37198,16 +37244,16 @@ function _G() {
           }
           return _context2.abrupt("return", null);
         case 2:
-          l = r === t ? "." : w(r, t);
-          if (!(e.exclude && r !== t && x(e.exclude).some(function (g) {
-            return g.test("/".concat(l));
+          a = r === t ? "." : R(r, t);
+          if (!(e.exclude && r !== t && S(e.exclude).some(function (b) {
+            return b.test("/".concat(a));
           }))) {
             _context2.next = 5;
             break;
           }
           return _context2.abrupt("return", null);
         case 5:
-          s = b(t);
+          s = T(t);
           _context2.prev = 6;
           _context2.next = 9;
           return F(t);
@@ -37244,8 +37290,8 @@ function _G() {
         case 27:
           throw _context2.t1;
         case 28:
-          E = i.isSymbolicLink(), I = h.isFile() ? "file" : "directory";
-          if (!(!e.showHidden && s.charAt(0) === "." || !e.symbolicLinks && E)) {
+          m = i.isSymbolicLink(), g = h.isFile() ? "file" : "directory";
+          if (!(!e.showHidden && s.charAt(0) === "." || !e.symbolicLinks && m)) {
             _context2.next = 31;
             break;
           }
@@ -37253,22 +37299,22 @@ function _G() {
         case 31:
           if (e.hash) {
             c = e.hashAlgorithm;
-            m = V(c), m.update(s);
+            E = M(c), E.update(s);
           }
-          o = {
+          u = {
             name: s,
             path: e.normalize ? t.replace(/\\/g, "/") : t,
-            relativePath: e.normalize ? l.replace(/\\/g, "/") : l,
-            type: I,
-            isSymbolicLink: E,
+            relativePath: e.normalize ? a.replace(/\\/g, "/") : a,
+            type: g,
+            isSymbolicLink: m,
             stat: e.followLinks ? h : i
           };
-          _context2.t2 = (e.stat || delete o.stat, I);
+          _context2.t2 = (e.stat || delete u.stat, g);
           _context2.next = _context2.t2 === "directory" ? 36 : _context2.t2 === "file" ? 65 : 84;
           break;
         case 36:
           _c2 = [];
-          if (!(e.followLinks || !E)) {
+          if (!(e.followLinks || !m)) {
             _context2.next = 57;
             break;
           }
@@ -37276,8 +37322,8 @@ function _G() {
           _context2.next = 41;
           return _(t);
         case 41:
-          g = _context2.sent;
-          g = A(g, e.sorted);
+          b = _context2.sent;
+          b = k(b, e.sorted);
           _context2.next = 50;
           break;
         case 45:
@@ -37291,15 +37337,15 @@ function _G() {
         case 49:
           throw _context2.t3;
         case 50:
-          e.emptyDirectory && (o.isEmpty = !g.length);
+          e.emptyDirectory && (u.isEmpty = !b.length);
           _context2.next = 53;
-          return Promise.all(g.map( /*#__PURE__*/function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(u) {
+          return Promise.all(b.map( /*#__PURE__*/function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(d) {
               return _regeneratorRuntime().wrap(function _callee$(_context) {
                 while (1) switch (_context.prev = _context.next) {
                   case 0:
                     _context.next = 2;
-                    return G(r, T(t, u), n + 1, e, a, d);
+                    return G(r, L(t, d), n + 1, e, l, o);
                   case 2:
                     return _context.abrupt("return", _context.sent);
                   case 3:
@@ -37314,8 +37360,8 @@ function _G() {
           }()));
         case 53:
           _c2 = _context2.sent;
-          _c2 = _c2.filter(function (u) {
-            return u !== null;
+          _c2 = _c2.filter(function (d) {
+            return d !== null;
           });
           if (!(e.excludeEmptyDirectories && !_c2.length)) {
             _context2.next = 57;
@@ -37327,9 +37373,9 @@ function _G() {
             _context2.next = 61;
             break;
           }
-          u = x(e.matches);
-          if (!(!_c2.length && u.some(function (f) {
-            return !f.test("/".concat(l));
+          d = S(e.matches);
+          if (!(!_c2.length && d.some(function (f) {
+            return !f.test("/".concat(a));
           }))) {
             _context2.next = 61;
             break;
@@ -37337,28 +37383,28 @@ function _G() {
           return _context2.abrupt("return", null);
         case 61:
           if (e.sizeInBytes || e.size) {
-            _u5 = _c2.reduce(function (f, y) {
+            _d5 = _c2.reduce(function (f, y) {
               return f + y.sizeInBytes;
             }, 0);
-            o.sizeInBytes = _u5, o.size = e.size ? P(_u5) : void 0, e.sizeInBytes || _c2.forEach(function (f) {
+            u.sizeInBytes = _d5, u.size = e.size ? C(_d5) : void 0, e.sizeInBytes || _c2.forEach(function (f) {
               return f.sizeInBytes = void 0;
             });
           }
           if (e.hash) {
             _c2.forEach(function (f) {
-              m.update(f.hash);
+              E.update(f.hash);
             });
-            _u6 = e.hashEncoding;
-            o.hash = m.digest(_u6);
+            _d6 = e.hashEncoding;
+            u.hash = E.digest(_d6);
           }
-          e.descendants && (o.descendants = _c2.reduce(function (u, f) {
+          e.descendants && (u.descendants = _c2.reduce(function (d, f) {
             var _f$descendants2;
-            return u + (f.type === "directory" && e.descendantsIgnoreDirectories ? 0 : 1) + ((_f$descendants2 = f.descendants) !== null && _f$descendants2 !== void 0 ? _f$descendants2 : 0);
-          }, 0)), _c2.length && (o.children = e.postSorted ? $(_c2, e.postSorted) : _c2);
+            return d + (f.type === "directory" && e.descendantsIgnoreDirectories ? 0 : 1) + ((_f$descendants2 = f.descendants) !== null && _f$descendants2 !== void 0 ? _f$descendants2 : 0);
+          }, 0)), _c2.length && (u.children = e.postSorted ? $(_c2, e.postSorted) : _c2);
           return _context2.abrupt("break", 85);
         case 65:
-          if (!(o.extension = R(t).replace(".", ""), e.extensions && e.extensions.indexOf(o.extension) === -1 || e.matches && r !== t && x(e.matches).some(function (f) {
-            return !f.test("/".concat(l));
+          if (!(u.extension = P(t).replace(".", ""), e.extensions && e.extensions.indexOf(u.extension) === -1 || e.matches && r !== t && S(e.matches).some(function (f) {
+            return !f.test("/".concat(a));
           }))) {
             _context2.next = 67;
             break;
@@ -37366,8 +37412,8 @@ function _G() {
           return _context2.abrupt("return", null);
         case 67:
           if (e.sizeInBytes || e.size) {
-            _u7 = e.followLinks ? h.size : i.size;
-            o.sizeInBytes = _u7, o.size = e.size ? P(_u7) : void 0;
+            _d7 = e.followLinks ? h.size : i.size;
+            u.sizeInBytes = _d7, u.size = e.size ? C(_d7) : void 0;
           }
           if (!e.hash) {
             _context2.next = 83;
@@ -37377,7 +37423,7 @@ function _G() {
           _context2.next = 72;
           return ee(t);
         case 72:
-          _u8 = _context2.sent;
+          _d8 = _context2.sent;
           _context2.next = 80;
           break;
         case 75:
@@ -37391,33 +37437,33 @@ function _G() {
         case 79:
           throw _context2.t4;
         case 80:
-          m.update(_u8);
+          E.update(_d8);
           f = e.hashEncoding;
-          o.hash = m.digest(f);
+          u.hash = E.digest(f);
         case 83:
           return _context2.abrupt("break", 85);
         case 84:
           return _context2.abrupt("return", null);
         case 85:
-          if (!(a && I === "file")) {
+          if (!(l && g === "file")) {
             _context2.next = 90;
             break;
           }
           _context2.next = 88;
-          return a(o, e.followLinks ? h : i);
+          return l(u, e.followLinks ? h : i);
         case 88:
           _context2.next = 94;
           break;
         case 90:
-          _context2.t5 = d && I === "directory";
+          _context2.t5 = o && g === "directory";
           if (!_context2.t5) {
             _context2.next = 94;
             break;
           }
           _context2.next = 94;
-          return d(o, e.followLinks ? h : i);
+          return o(u, e.followLinks ? h : i);
         case 94:
-          return _context2.abrupt("return", o);
+          return _context2.abrupt("return", u);
         case 95:
         case "end":
           return _context2.stop();
@@ -37427,90 +37473,90 @@ function _G() {
   return _G.apply(this, arguments);
 }
 function K(r, t, n) {
-  return !t.symbolicLinks && r.isSymbolicLink || !t.showHidden && r.name.charAt(0) === "." || t.extensions !== void 0 && r.type === "file" && t.extensions.indexOf(r.extension) === -1 || t.exclude && x(t.exclude).some(function (e) {
+  return !t.symbolicLinks && r.isSymbolicLink || !t.showHidden && r.name.charAt(0) === "." || t.extensions !== void 0 && r.type === "file" && t.extensions.indexOf(r.extension) === -1 || t.exclude && S(t.exclude).some(function (e) {
     return e.test("/".concat(r.relativePath));
   }) || t.depth !== void 0 && n > t.depth;
 }
-function j(r, t, n, e, a) {
-  var d = "";
+function j(r, t, n, e, l) {
+  var o = "";
   return t.map(function (s, h) {
     var i = "";
-    if (e.depth !== void 0 && a > e.depth || e.exclude && x(e.exclude).some(function (S) {
-      return S.test("/".concat((0,external_node_path_namespaceObject.relative)(r, s)));
+    if (e.depth !== void 0 && l > e.depth || e.exclude && S(e.exclude).some(function (I) {
+      return I.test("/".concat((0,external_node_path_namespaceObject.relative)(r, s)));
     })) return "";
-    var E = (0,external_node_path_namespaceObject.basename)(s),
-      I;
+    var m = (0,external_node_path_namespaceObject.basename)(s),
+      g;
     try {
-      I = (0,external_node_fs_namespaceObject.statSync)(s);
+      g = (0,external_node_fs_namespaceObject.statSync)(s);
     } catch (y) {
       if (e.skipErrors) return null;
       throw y;
     }
-    var m;
+    var E;
     try {
-      m = (0,external_node_fs_namespaceObject.lstatSync)(s);
+      E = (0,external_node_fs_namespaceObject.lstatSync)(s);
     } catch (y) {
       if (e.skipErrors) return null;
       throw y;
     }
-    var o = m.isSymbolicLink(),
-      c = I.isFile() ? "file" : "directory";
-    if (!e.showHidden && E.charAt(0) === "." || !e.symbolicLinks && o) return "";
-    var g = (0,external_node_path_namespaceObject.extname)(s).replace(".", "");
-    if (e.extensions && c === "file" && e.extensions.indexOf(g) === -1) return "";
-    var u = o ? ">>" : c === "directory" ? "\u2500> " : "\u2500\u2500 ",
-      f = n + (h === t.length - 1 ? "    " : "\u2502   ");
-    if (i += u + E, (e.followLinks || !o) && c === "directory") {
+    var u = E.isSymbolicLink(),
+      c = g.isFile() ? "file" : "directory";
+    if (!e.showHidden && m.charAt(0) === "." || !e.symbolicLinks && u) return "";
+    var b = (0,external_node_path_namespaceObject.extname)(s).replace(".", "");
+    if (e.extensions && c === "file" && e.extensions.indexOf(b) === -1) return "";
+    var d = u ? e.symbols.linkChild : c === "directory" ? e.symbols.dirChild : e.symbols.fileChild,
+      f = n + (h === t.length - 1 ? e.symbols.tabIndent : e.symbols.pipeIndent);
+    if (i += d + m, (e.followLinks || !u) && c === "directory") {
       var y;
       try {
-        y = (0,external_node_fs_namespaceObject.readdirSync)(s).map(function (S) {
-          return (0,external_node_path_namespaceObject.resolve)(s, S);
-        }), y = A(y, e.sorted);
-      } catch (S) {
+        y = (0,external_node_fs_namespaceObject.readdirSync)(s).map(function (I) {
+          return (0,external_node_path_namespaceObject.resolve)(s, I);
+        }), y = k(y, e.sorted);
+      } catch (I) {
         if (e.skipErrors) return null;
-        throw S;
+        throw I;
       }
-      i += y.length ? j(r, y, f, e, a + 1) : "";
+      i += y.length ? j(r, y, f, e, l + 1) : "";
     }
     return i;
   }).filter(function (s) {
     return !!s;
   }).forEach(function (s, h, i) {
-    d += n + (h === i.length - 1 ? "\u2514" + s : "\u251C" + s);
-  }), d;
+    o += n + (h === i.length - 1 ? e.symbols.lastChild + s : e.symbols.forkChild + s);
+  }), o;
 }
 function J(_x7, _x8, _x9, _x10, _x11) {
   return _J.apply(this, arguments);
 }
 function _J() {
-  _J = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(r, t, n, e, a) {
-    var d;
+  _J = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(r, t, n, e, l) {
+    var o;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
-          d = "";
+          o = "";
           _context4.next = 3;
           return Promise.all(t.map( /*#__PURE__*/function () {
             var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(s, h) {
-              var i, E, I, m, o, c, g, u, f, y;
+              var i, m, g, E, u, c, b, d, f, y;
               return _regeneratorRuntime().wrap(function _callee3$(_context3) {
                 while (1) switch (_context3.prev = _context3.next) {
                   case 0:
                     i = "";
-                    if (!(e.depth !== void 0 && a > e.depth || e.exclude && x(e.exclude).some(function (S) {
-                      return S.test("/".concat(w(r, s)));
+                    if (!(e.depth !== void 0 && l > e.depth || e.exclude && S(e.exclude).some(function (I) {
+                      return I.test("/".concat(R(r, s)));
                     }))) {
                       _context3.next = 3;
                       break;
                     }
                     return _context3.abrupt("return", "");
                   case 3:
-                    E = b(s);
+                    m = T(s);
                     _context3.prev = 4;
                     _context3.next = 7;
                     return F(s);
                   case 7:
-                    I = _context3.sent;
+                    g = _context3.sent;
                     _context3.next = 15;
                     break;
                   case 10:
@@ -37528,7 +37574,7 @@ function _J() {
                     _context3.next = 18;
                     return H(s);
                   case 18:
-                    m = _context3.sent;
+                    E = _context3.sent;
                     _context3.next = 26;
                     break;
                   case 21:
@@ -37542,22 +37588,22 @@ function _J() {
                   case 25:
                     throw _context3.t1;
                   case 26:
-                    o = m.isSymbolicLink(), c = I.isFile() ? "file" : "directory";
-                    if (!(!e.showHidden && E.charAt(0) === "." || !e.symbolicLinks && o)) {
+                    u = E.isSymbolicLink(), c = g.isFile() ? "file" : "directory";
+                    if (!(!e.showHidden && m.charAt(0) === "." || !e.symbolicLinks && u)) {
                       _context3.next = 29;
                       break;
                     }
                     return _context3.abrupt("return", "");
                   case 29:
-                    g = R(s).replace(".", "");
-                    if (!(e.extensions && c === "file" && e.extensions.indexOf(g) === -1)) {
+                    b = P(s).replace(".", "");
+                    if (!(e.extensions && c === "file" && e.extensions.indexOf(b) === -1)) {
                       _context3.next = 32;
                       break;
                     }
                     return _context3.abrupt("return", "");
                   case 32:
-                    u = o ? ">>" : c === "directory" ? "\u2500> " : "\u2500\u2500 ", f = n + (h === t.length - 1 ? "    " : "\u2502   ");
-                    if (!(i += u + E, (e.followLinks || !o) && c === "directory")) {
+                    d = u ? e.symbols.linkChild : c === "directory" ? e.symbols.dirChild : e.symbols.fileChild, f = n + (h === t.length - 1 ? e.symbols.tabIndent : e.symbols.pipeIndent);
+                    if (!(i += d + m, (e.followLinks || !u) && c === "directory")) {
                       _context3.next = 55;
                       break;
                     }
@@ -37565,10 +37611,10 @@ function _J() {
                     _context3.next = 37;
                     return _(s);
                   case 37:
-                    y = _context3.sent.map(function (S) {
-                      return T(s, S);
+                    y = _context3.sent.map(function (I) {
+                      return L(s, I);
                     });
-                    y = A(y, e.sorted);
+                    y = k(y, e.sorted);
                     _context3.next = 46;
                     break;
                   case 41:
@@ -37588,7 +37634,7 @@ function _J() {
                       break;
                     }
                     _context3.next = 50;
-                    return J(r, y, f, e, a + 1);
+                    return J(r, y, f, e, l + 1);
                   case 50:
                     _context3.t4 = _context3.sent;
                     _context3.next = 54;
@@ -37613,9 +37659,9 @@ function _J() {
           _context4.sent.filter(function (s) {
             return !!s;
           }).forEach(function (s, h, i) {
-            d += n + (h === i.length - 1 ? "\u2514" + s : "\u251C" + s);
+            o += n + (h === i.length - 1 ? e.symbols.lastChild + s : e.symbols.forkChild + s);
           });
-          return _context4.abrupt("return", d);
+          return _context4.abrupt("return", o);
         case 5:
         case "end":
           return _context4.stop();
@@ -37625,45 +37671,45 @@ function _J() {
   return _J.apply(this, arguments);
 }
 function Q(r, t, n, e) {
-  var a = "";
-  return r = q(r, n.sorted), r.filter(function (d) {
-    return !K(d, n, e);
-  }).forEach(function (d, l, s) {
-    var h = d.isSymbolicLink ? ">>" : d.type === "directory" ? "\u2500> " : "\u2500\u2500 ",
-      i = l === s.length - 1 ? "\u2514" + h : "\u251C" + h,
-      E = t + (l === s.length - 1 ? "    " : "\u2502   ");
-    a += t + i + d.name, a += d.children && (n.followLinks || !d.isSymbolicLink) ? Q(d.children, E, n, e + 1) : "";
-  }), a;
+  var l = "";
+  return r = U(r, n.sorted), r.filter(function (o) {
+    return !K(o, n, e);
+  }).forEach(function (o, a, s) {
+    var h = o.isSymbolicLink ? n.symbols.linkChild : o.type === "directory" ? n.symbols.dirChild : n.symbols.fileChild,
+      i = a === s.length - 1 ? n.symbols.lastChild + h : n.symbols.forkChild + h,
+      m = t + (a === s.length - 1 ? n.symbols.tabIndent : n.symbols.pipeIndent);
+    l += t + i + o.name, l += o.children && (n.followLinks || !o.isSymbolicLink) ? Q(o.children, m, n, e + 1) : "";
+  }), l;
 }
 function W(_x12, _x13, _x14, _x15) {
   return _W.apply(this, arguments);
 }
 function _W() {
   _W = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(r, t, n, e) {
-    var a, d, l, s, h, i, E;
+    var l, o, a, s, h, i, m;
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
-          a = "";
-          r = q(r, n.sorted);
-          d = r.filter(function (l) {
-            return !K(l, n, e);
+          l = "";
+          r = U(r, n.sorted);
+          o = r.filter(function (a) {
+            return !K(a, n, e);
           });
-          l = 0;
+          a = 0;
         case 4:
-          if (!(l < d.length)) {
+          if (!(a < o.length)) {
             _context5.next = 19;
             break;
           }
-          s = d[l], h = s.isSymbolicLink ? ">>" : s.type === "directory" ? "\u2500> " : "\u2500\u2500 ", i = l === d.length - 1 ? "\u2514" + h : "\u251C" + h, E = t + (l === d.length - 1 ? "    " : "\u2502   ");
-          a += t + i + s.name;
-          _context5.t0 = a;
+          s = o[a], h = s.isSymbolicLink ? n.symbols.linkChild : s.type === "directory" ? n.symbols.dirChild : n.symbols.fileChild, i = a === o.length - 1 ? n.symbols.lastChild + h : n.symbols.forkChild + h, m = t + (a === o.length - 1 ? n.symbols.tabIndent : n.symbols.pipeIndent);
+          l += t + i + s.name;
+          _context5.t0 = l;
           if (!(s.children && (n.followLinks || !s.isSymbolicLink))) {
             _context5.next = 14;
             break;
           }
           _context5.next = 11;
-          return W(s.children, E, n, e + 1);
+          return W(s.children, m, n, e + 1);
         case 11:
           _context5.t1 = _context5.sent;
           _context5.next = 15;
@@ -37671,13 +37717,13 @@ function _W() {
         case 14:
           _context5.t1 = "";
         case 15:
-          a = _context5.t0 += _context5.t1;
+          l = _context5.t0 += _context5.t1;
         case 16:
-          l++;
+          a++;
           _context5.next = 4;
           break;
         case 19:
-          return _context5.abrupt("return", a);
+          return _context5.abrupt("return", l);
         case 20:
         case "end":
           return _context5.stop();
@@ -37686,87 +37732,87 @@ function _W() {
   }));
   return _W.apply(this, arguments);
 }
-function me(r, t, n, e) {
-  var a = M(t),
-    d = D(r, a),
-    l = U(d, d, 0, a, n, e);
-  return l && (l.sizeInBytes = a.sizeInBytes ? l.sizeInBytes : void 0), l;
+function ge(r, t, n, e) {
+  var l = V(t),
+    o = w(r, l),
+    a = q(o, o, 0, l, n, e);
+  return a && (a.sizeInBytes = l.sizeInBytes ? a.sizeInBytes : void 0), a;
 }
-function ge(_x16, _x17, _x18, _x19) {
-  return _ge.apply(this, arguments);
+function Ie(_x16, _x17, _x18, _x19) {
+  return _Ie.apply(this, arguments);
 }
-function _ge() {
-  _ge = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(r, t, n, e) {
-    var a, d, l;
+function _Ie() {
+  _Ie = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(r, t, n, e) {
+    var l, o, a;
     return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) switch (_context6.prev = _context6.next) {
         case 0:
-          a = M(t);
-          d = D(r, a);
+          l = V(t);
+          o = w(r, l);
           _context6.next = 4;
-          return G(d, d, 0, a, n, e);
+          return G(o, o, 0, l, n, e);
         case 4:
-          l = _context6.sent;
-          return _context6.abrupt("return", (l && (l.sizeInBytes = a.sizeInBytes ? l.sizeInBytes : void 0), l));
+          a = _context6.sent;
+          return _context6.abrupt("return", (a && (a.sizeInBytes = l.sizeInBytes ? a.sizeInBytes : void 0), a));
         case 6:
         case "end":
           return _context6.stop();
       }
     }, _callee6);
   }));
-  return _ge.apply(this, arguments);
+  return _Ie.apply(this, arguments);
 }
-function Ie(r, t) {
+function Se(r, t) {
   var n = "",
-    e = p(t),
-    a = D(r, e),
-    d = (0,external_node_path_namespaceObject.basename)(a);
-  n += d;
-  var l;
+    e = D(t),
+    l = w(r, e),
+    o = (0,external_node_path_namespaceObject.basename)(l);
+  n += o;
+  var a;
   try {
-    l = (0,external_node_fs_namespaceObject.statSync)(a);
+    a = (0,external_node_fs_namespaceObject.statSync)(l);
   } catch (i) {
     if (e.skipErrors) return null;
     throw i;
   }
   var s;
   try {
-    s = (0,external_node_fs_namespaceObject.lstatSync)(a);
+    s = (0,external_node_fs_namespaceObject.lstatSync)(l);
   } catch (i) {
     if (e.skipErrors) return null;
     throw i;
   }
   var h = s.isSymbolicLink();
-  if ((e.followLinks || !h) && l.isDirectory()) {
+  if ((e.followLinks || !h) && a.isDirectory()) {
     var i;
     try {
-      i = (0,external_node_fs_namespaceObject.readdirSync)(a).map(function (E) {
-        return (0,external_node_path_namespaceObject.resolve)(a, E);
-      }), i = A(i, e.sorted);
-    } catch (E) {
+      i = (0,external_node_fs_namespaceObject.readdirSync)(l).map(function (m) {
+        return (0,external_node_path_namespaceObject.resolve)(l, m);
+      }), i = k(i, e.sorted);
+    } catch (m) {
       if (e.skipErrors) return null;
-      throw E;
+      throw m;
     }
-    n += i.length ? j(a, i, "\n ", e, 1) : "";
+    n += i.length ? j(l, i, "\n ", e, 1) : "";
   }
   return n;
 }
-function Se(_x20, _x21) {
-  return _Se.apply(this, arguments);
+function xe(_x20, _x21) {
+  return _xe.apply(this, arguments);
 }
-function _Se() {
-  _Se = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(r, t) {
-    var n, e, a, d, l, s, h, i;
+function _xe() {
+  _xe = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(r, t) {
+    var n, e, l, o, a, s, h, i;
     return _regeneratorRuntime().wrap(function _callee7$(_context7) {
       while (1) switch (_context7.prev = _context7.next) {
         case 0:
-          n = "", e = p(t), a = D(r, e), d = b(a);
-          n += d;
+          n = "", e = D(t), l = w(r, e), o = T(l);
+          n += o;
           _context7.prev = 2;
           _context7.next = 5;
-          return F(a);
+          return F(l);
         case 5:
-          l = _context7.sent;
+          a = _context7.sent;
           _context7.next = 13;
           break;
         case 8:
@@ -37782,7 +37828,7 @@ function _Se() {
         case 13:
           _context7.prev = 13;
           _context7.next = 16;
-          return H(a);
+          return H(l);
         case 16:
           s = _context7.sent;
           _context7.next = 24;
@@ -37799,18 +37845,18 @@ function _Se() {
           throw _context7.t1;
         case 24:
           h = s.isSymbolicLink();
-          if (!((e.followLinks || !h) && l.isDirectory())) {
+          if (!((e.followLinks || !h) && a.isDirectory())) {
             _context7.next = 47;
             break;
           }
           _context7.prev = 26;
           _context7.next = 29;
-          return _(a);
+          return _(l);
         case 29:
-          i = _context7.sent.map(function (E) {
-            return T(a, E);
+          i = _context7.sent.map(function (m) {
+            return L(l, m);
           });
-          i = A(i, e.sorted);
+          i = k(i, e.sorted);
           _context7.next = 38;
           break;
         case 33:
@@ -37830,7 +37876,7 @@ function _Se() {
             break;
           }
           _context7.next = 42;
-          return J(a, i, "\n ", e, 1);
+          return J(l, i, "\n ", e, 1);
         case 42:
           _context7.t4 = _context7.sent;
           _context7.next = 46;
@@ -37847,23 +37893,23 @@ function _Se() {
       }
     }, _callee7, null, [[2, 8], [13, 19], [26, 33]]);
   }));
-  return _Se.apply(this, arguments);
+  return _xe.apply(this, arguments);
 }
-function xe(r, t) {
+function Le(r, t) {
   var n = "",
-    e = p(t);
+    e = D(t);
   return n += r ? r.name : "", n += r.children ? Q(r.children, "\n ", e, 1) : "", n;
 }
-function Le(_x22, _x23) {
-  return _Le.apply(this, arguments);
+function Te(_x22, _x23) {
+  return _Te.apply(this, arguments);
 }
-function _Le() {
-  _Le = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(r, t) {
+function _Te() {
+  _Te = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(r, t) {
     var n, e;
     return _regeneratorRuntime().wrap(function _callee8$(_context8) {
       while (1) switch (_context8.prev = _context8.next) {
         case 0:
-          n = "", e = p(t);
+          n = "", e = D(t);
           n += r ? r.name : "";
           _context8.t0 = n;
           if (!r.children) {
@@ -37887,11 +37933,11 @@ function _Le() {
       }
     }, _callee8);
   }));
-  return _Le.apply(this, arguments);
+  return _Te.apply(this, arguments);
 }
 
 ;// CONCATENATED MODULE: ./src/index.ts
-function convertToNumber(str){var num=+str;return isNaN(num)?5:num;};(0,asyncToGenerator/* default */.A)(/*#__PURE__*/(0,regeneratorRuntime/* default */.A)().mark(function _callee(){var folderPath,exclude,depth,_context$repo,owner,repo,dtreeOptions,dreeResult;return (0,regeneratorRuntime/* default */.A)().wrap(function _callee$(_context){while(1)switch(_context.prev=_context.next){case 0:folderPath=(0,core.getInput)('path')||".";exclude=(0,core.getInput)('exclude');depth=convertToNumber((0,core.getInput)('depth')||"5");_context$repo=github.context.repo,owner=_context$repo.owner,repo=_context$repo.repo;dtreeOptions={depth:depth};try{if(exclude){dtreeOptions.exclude=new RegExp(exclude);}dreeResult=Ie(folderPath,dtreeOptions);(0,core.startGroup)("\x1B[32;1m ".concat(owner,"/").concat(repo," \x1B[0m tree: "));(0,core.info)("".concat(dreeResult));(0,core.endGroup)();(0,core.setOutput)('content',dreeResult);}catch(error){(0,core.setFailed)(error);}case 6:case"end":return _context.stop();}},_callee);}))();
+function convertToNumber(str){var num=+str;return isNaN(num)?5:num;};(0,asyncToGenerator/* default */.A)(/*#__PURE__*/(0,regeneratorRuntime/* default */.A)().mark(function _callee(){var folderPath,exclude,depth,_context$repo,owner,repo,dtreeOptions,dreeResult;return (0,regeneratorRuntime/* default */.A)().wrap(function _callee$(_context){while(1)switch(_context.prev=_context.next){case 0:folderPath=(0,core.getInput)('path')||".";exclude=(0,core.getInput)('exclude');depth=convertToNumber((0,core.getInput)('depth')||"5");_context$repo=github.context.repo,owner=_context$repo.owner,repo=_context$repo.repo;dtreeOptions={depth:depth};try{if(exclude){dtreeOptions.exclude=new RegExp(exclude);}dreeResult=Se(folderPath,dtreeOptions);(0,core.startGroup)("\x1B[32;1m ".concat(owner,"/").concat(repo," \x1B[0m tree: "));(0,core.info)("".concat(dreeResult));(0,core.endGroup)();(0,core.setOutput)('content',dreeResult);}catch(error){(0,core.setFailed)(error);}case 6:case"end":return _context.stop();}},_callee);}))();
 })();
 
 module.exports = __webpack_exports__;
