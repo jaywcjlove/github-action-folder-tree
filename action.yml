@@ -14,6 +14,9 @@ inputs:
     description: 'Pass a regex string to exclude directories from printing'
     default: ''
     required: false
+  config:
+    description: 'The path to the dree configuration file'
+    required: false
   depth:
     description: 'Scan the maximum depth reachable for the given path'
     default: 5

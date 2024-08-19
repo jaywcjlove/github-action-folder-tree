@@ -54,6 +54,7 @@ Output Project Structure
 - `path` Folder path. (default `./`)
 - `depth` Scan the maximum depth reachable for the given path (default `5`)
 - `exclude` Pass a regex string to exclude directories from printing
+- `config` The path to the dree configuration file
 
 ## Outputs
 
