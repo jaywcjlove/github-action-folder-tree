@@ -34895,8 +34895,12 @@ var __webpack_exports__ = {};
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/regeneratorRuntime.js
 var regeneratorRuntime = __webpack_require__(675);
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectSpread2.js
+var objectSpread2 = __webpack_require__(9379);
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js
 var asyncToGenerator = __webpack_require__(467);
+// EXTERNAL MODULE: external "fs"
+var external_fs_ = __webpack_require__(9896);
 // EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
 var github = __webpack_require__(8340);
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
@@ -37937,7 +37941,7 @@ function _Te() {
 }
 
 ;// CONCATENATED MODULE: ./src/index.ts
-function convertToNumber(str){var num=+str;return isNaN(num)?5:num;};(0,asyncToGenerator/* default */.A)(/*#__PURE__*/(0,regeneratorRuntime/* default */.A)().mark(function _callee(){var folderPath,exclude,depth,_context$repo,owner,repo,dtreeOptions,dreeResult;return (0,regeneratorRuntime/* default */.A)().wrap(function _callee$(_context){while(1)switch(_context.prev=_context.next){case 0:folderPath=(0,core.getInput)('path')||".";exclude=(0,core.getInput)('exclude');depth=convertToNumber((0,core.getInput)('depth')||"5");_context$repo=github.context.repo,owner=_context$repo.owner,repo=_context$repo.repo;dtreeOptions={depth:depth};try{if(exclude){dtreeOptions.exclude=new RegExp(exclude);}dreeResult=Se(folderPath,dtreeOptions);(0,core.startGroup)("\x1B[32;1m ".concat(owner,"/").concat(repo," \x1B[0m tree: "));(0,core.info)("".concat(dreeResult));(0,core.endGroup)();(0,core.setOutput)('content',dreeResult);}catch(error){(0,core.setFailed)(error);}case 6:case"end":return _context.stop();}},_callee);}))();
+function convertToNumber(str){var num=+str;return isNaN(num)?5:num;};(0,asyncToGenerator/* default */.A)(/*#__PURE__*/(0,regeneratorRuntime/* default */.A)().mark(function _callee(){var folderPath,exclude,config,depth,_context$repo,owner,repo,dtreeOptions,conf,dreeResult;return (0,regeneratorRuntime/* default */.A)().wrap(function _callee$(_context){while(1)switch(_context.prev=_context.next){case 0:folderPath=(0,core.getInput)('path',{required:false})||".";exclude=(0,core.getInput)('exclude',{required:false});config=(0,core.getInput)('config',{required:false})||undefined;depth=convertToNumber((0,core.getInput)('depth')||"5");_context$repo=github.context.repo,owner=_context$repo.owner,repo=_context$repo.repo;dtreeOptions={depth:depth};try{if(exclude){dtreeOptions.exclude=new RegExp(exclude);}if(config&&external_fs_.existsSync(config)){conf=JSON.parse(external_fs_.readFileSync(config,'utf-8'));dtreeOptions=(0,objectSpread2/* default */.A)((0,objectSpread2/* default */.A)({},dtreeOptions),conf);}dreeResult=Se(folderPath,dtreeOptions);(0,core.startGroup)("\x1B[32;1m ".concat(owner,"/").concat(repo," \x1B[0m tree: "));(0,core.info)("".concat(dreeResult));(0,core.endGroup)();(0,core.setOutput)('content',dreeResult);}catch(error){(0,core.setFailed)(error);}case 7:case"end":return _context.stop();}},_callee);}))();
 })();
 
 module.exports = __webpack_exports__;
