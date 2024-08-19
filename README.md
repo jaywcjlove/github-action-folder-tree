@@ -49,6 +49,15 @@ Output Project Structure
     body: ${{ steps.tree.outputs.content }}
 ```
 
+Configure dree using JSON
+
+```yml
+- name: Print Folder Tree
+  uses: jaywcjlove/github-action-folder-tree@main
+  with:
+    config: './docs/dree-config.json'
+```
+
 ## Inputs
 
 - `path` Folder path. (default `./`)
