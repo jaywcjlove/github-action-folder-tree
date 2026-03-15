@@ -1,7 +1,7 @@
 {
   "name": "github-action-folder-tree",
-  "version": "1.2.0",
-  "description": "View the folder directory tree structure, similar to the output of the tree command",
+  "version": "1.3.0",
+  "description": "View the folder directory tree structure, similar to the output of the `tree` command",
   "homepage": "https://github.com/jaywcjlove/github-action-folder-tree#readme",
   "main": "dist/index.js",
   "scripts": {
